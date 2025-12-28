@@ -3,7 +3,14 @@ import json
 import pytest
 from pytest_mock import MockFixture
 
-from pyfitel import exec_command, exec_commands, get_commands_result
+from pyfitel import (
+    delete_commands_result,
+    delete_commands_result_all,
+    exec_command,
+    exec_commands,
+    get_clis_id_all,
+    get_commands_result,
+)
 
 from .common import MockReponse
 
@@ -107,3 +114,33 @@ class TestExecCommands:
                 bearer=True,
             )
         assert mock_api.call_count == 0
+
+
+def test_get_clis_id_all(mocker: MockFixture):
+    relust_data = {
+        "data": [{"clis_id": 28}, {"clis_id": 29}, {"clis_id": 30}],
+        "total": 3,
+    }
+    mock_response = MockReponse(status_code=200, text=json.dumps(relust_data))
+    mock_api = mocker.patch("pyfitel.cli.get", return_value=mock_response)
+    url = "http://192.168.1.1:55443"
+
+    res = get_clis_id_all(url=url, bearer=True, token="testtoken")
+    assert mock_api.call_count == 1
+    assert res == relust_data
+
+
+def test_delete_commands_result(mocker: MockFixture):
+    mock_response = MockReponse(status_code=204, text="")
+    mock_api = mocker.patch("pyfitel.cli.delete", return_value=mock_response)
+    url = "http://192.168.1.1:55443"
+    delete_commands_result(url=url, cli_id="28", bearer=True, token="testtoken")
+    assert mock_api.call_count == 1
+
+
+def test_delete_commands_result_all(mocker: MockFixture):
+    mock_response = MockReponse(status_code=204, text="")
+    mock_api = mocker.patch("pyfitel.cli.delete", return_value=mock_response)
+    url = "http://192.168.1.1:55443"
+    delete_commands_result_all(url=url, bearer=True, token="testtoken")
+    assert mock_api.call_count == 1

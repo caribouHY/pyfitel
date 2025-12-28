@@ -1,4 +1,4 @@
-from .core import auth, get, post
+from .core import auth, delete, get, post
 
 
 def exec_command(
@@ -71,6 +71,60 @@ def exec_commands(
     return res.json()
 
 
+def get_clis_id_all(
+    url: str,
+    user: str | None = None,
+    password: str | None = None,
+    bearer: bool = False,
+    token: str | None = None,
+) -> dict:
+    """全てのCLIコマンドの複数実行のCLIコマンドIDを取得する。
+
+    Args:
+        url (str): API URL
+        user (str | None): BASIC認証時のユーザー名
+        password (str | None): BASIC認証時のパスワード
+        bearer (bool): Bearer認証を使用する場合はTrue、BASIC認証の場合はFalse
+        token (str | None): Bearer認証時のアクセストークン
+    Returns:
+        dict:
+    """
+
+    api = "/api/v1/clis"
+
+    res = get(
+        base_url=url,
+        endpoint=api,
+        auth=auth(bearer=bearer, user=user, password=password, token=token),
+    )
+    return res.json()
+
+
+def delete_commands_result_all(
+    url: str,
+    user: str | None = None,
+    password: str | None = None,
+    bearer: bool = False,
+    token: str | None = None,
+) -> None:
+    """全てのCLIコマンドの複数実行の結果を削除する。
+
+    Args:
+        url (str): API URL
+        user (str | None): BASIC認証時のユーザー名
+        password (str | None): BASIC認証時のパスワード
+        bearer (bool): Bearer認証を使用する場合はTrue、BASIC認証の場合はFalse
+        token (str | None): Bearer認証時のアクセストークン
+    """
+
+    api = "/api/v1/clis"
+    delete(
+        base_url=url,
+        endpoint=api,
+        auth=auth(bearer=bearer, user=user, password=password, token=token),
+    )
+
+
 def get_commands_result(
     url: str,
     cli_id: str,
@@ -84,8 +138,8 @@ def get_commands_result(
     Args:
         url (str): API URL
         cli_id (str): 取得するCLIコマンドID
-        user (str | None, optional): BASIC認証時のユーザー名
-        password (str | None, optional): BASIC認証時のパスワード
+        user (str | None): BASIC認証時のユーザー名
+        password (str | None): BASIC認証時のパスワード
         bearer (bool): Bearer認証を使用する場合はTrue、BASIC認証の場合はFalse
         token (str | None): Bearer認証時のアクセストークン
     Returns:
@@ -99,3 +153,30 @@ def get_commands_result(
         auth=auth(bearer=bearer, user=user, password=password, token=token),
     )
     return res.json()
+
+
+def delete_commands_result(
+    url: str,
+    cli_id: str,
+    user: str | None = None,
+    password: str | None = None,
+    bearer: bool = False,
+    token: str | None = None,
+) -> None:
+    """指定したCLIコマンドIDの複数CLIコマンドの実行結果を削除する。
+
+    Args:
+        url (str): API URL
+        cli_id (str): 削除するCLIコマンドID
+        user (str | None): BASIC認証時のユーザー名
+        password (str | None): BASIC認証時のパスワード
+        bearer (bool): Bearer認証を使用する場合はTrue、BASIC認証の場合はFalse
+        token (str | None): Bearer認証時のアクセストークン
+    """
+
+    api = f"/api/v1/clis/{cli_id}"
+    delete(
+        base_url=url,
+        endpoint=api,
+        auth=auth(bearer=bearer, user=user, password=password, token=token),
+    )
