@@ -28,7 +28,7 @@ F70   Version 01.08(00)b0[0]00.00.0 [2023/06/30 15:00]
         return_value=MockReponse(status_code=201, text=command_result),
     )
 
-    url = "http://192.168.1.1:55443"
+    url = "http://192.168.1.1:50443"
     cmd = "show version"
     user = "operator"
     password = "password123"
@@ -75,7 +75,7 @@ def test_get_commands_result(mocker: MockFixture):
     }
     mock_response = MockReponse(status_code=202, text=json.dumps(relust_data))
     mock_api = mocker.patch("pyfitel.cli.get", return_value=mock_response)
-    url = "http://192.168.1.1:55443"
+    url = "http://192.168.1.1:50443"
 
     res = get_commands_result(url=url, cli_id="1", bearer=True, token="testtoken")
 
@@ -89,7 +89,7 @@ class TestExecCommands:
         mock_response = MockReponse(status_code=202, text=json.dumps(relust_data))
         mock_api = mocker.patch("pyfitel.cli.post", return_value=mock_response)
 
-        url = "http://192.168.1.1:55443"
+        url = "http://192.168.1.1:50443"
         cmd_list = [
             {"cmd": "show version", "on_fail": {"action": "exit"}},
             {"cmd": "show ip route", "on_fail": {"action": "continue"}},
@@ -102,7 +102,7 @@ class TestExecCommands:
     def test_exec_commands_failure(self, mocker: MockFixture):
         mock_response = MockReponse(status_code=202, text="foo")
         mock_api = mocker.patch("pyfitel.cli.post", return_value=mock_response)
-        url = "http://192.168.1.1:55443"
+        url = "http://192.168.1.1:50443"
 
         with pytest.raises(ValueError):
             exec_commands(url=url, cmd_list=[], token="testtoken", bearer=True)
@@ -123,7 +123,7 @@ def test_get_clis_id_all(mocker: MockFixture):
     }
     mock_response = MockReponse(status_code=200, text=json.dumps(relust_data))
     mock_api = mocker.patch("pyfitel.cli.get", return_value=mock_response)
-    url = "http://192.168.1.1:55443"
+    url = "http://192.168.1.1:50443"
 
     res = get_clis_id_all(url=url, bearer=True, token="testtoken")
     assert mock_api.call_count == 1
@@ -133,7 +133,7 @@ def test_get_clis_id_all(mocker: MockFixture):
 def test_delete_commands_result(mocker: MockFixture):
     mock_response = MockReponse(status_code=204, text="")
     mock_api = mocker.patch("pyfitel.cli.delete", return_value=mock_response)
-    url = "http://192.168.1.1:55443"
+    url = "http://192.168.1.1:50443"
     delete_commands_result(url=url, cli_id="28", bearer=True, token="testtoken")
     assert mock_api.call_count == 1
 
@@ -141,6 +141,6 @@ def test_delete_commands_result(mocker: MockFixture):
 def test_delete_commands_result_all(mocker: MockFixture):
     mock_response = MockReponse(status_code=204, text="")
     mock_api = mocker.patch("pyfitel.cli.delete", return_value=mock_response)
-    url = "http://192.168.1.1:55443"
+    url = "http://192.168.1.1:50443"
     delete_commands_result_all(url=url, bearer=True, token="testtoken")
     assert mock_api.call_count == 1

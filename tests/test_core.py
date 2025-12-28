@@ -43,7 +43,7 @@ def test_get(mocker: MockFixture):
         return_value=MockReponse(status_code=200, text="success"),
     )
 
-    url = "http://192.168.1.1:55443"
+    url = "http://192.168.1.1:50443"
     res = get(base_url=url, endpoint="api", auth={"auth": "token"})
     assert mock_api.call_count == 1
     assert res.text == "success"
@@ -55,7 +55,7 @@ def test_post_success(mocker: MockFixture):
         return_value=MockReponse(status_code=200, text="success"),
     )
 
-    url = "http://192.168.1.1:55443"
+    url = "http://192.168.1.1:50443"
     res = post(
         base_url=url, endpoint="api", auth={"auth": "token"}, data={"data": "hoge"}
     )
@@ -69,7 +69,7 @@ def test_post_failure(mocker: MockFixture):
         return_value=MockReponse(status_code=400, text='{"error": "error"}'),
     )
 
-    url = "http://192.168.1.1:55443"
+    url = "http://192.168.1.1:50443"
     with pytest.raises(FITELnetAPIError):
         post(
             base_url=url, endpoint="api", auth={"auth": "token"}, data={"data": "hoge"}
@@ -83,6 +83,6 @@ def test_delete(mocker: MockFixture):
         return_value=MockReponse(status_code=200, text="deleted"),
     )
 
-    url = "http://192.168.1.1:55443"
+    url = "http://192.168.1.1:50443"
     delete(base_url=url, endpoint="api", auth={"auth": "token"})
     assert mock_api.call_count == 1

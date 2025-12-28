@@ -19,7 +19,7 @@ def test_publish_token_success(mocker: MockFixture):
         return_value=MockReponse(status_code=201, text=json.dumps(token_info)),
     )
 
-    url = "http://192.168.1.1:55443"
+    url = "http://192.168.1.1:50443"
     user = "operator"
     password = "password123"
 
@@ -35,7 +35,7 @@ def test_delete_token_success(mocker: MockFixture):
         return_value=MockReponse(status_code=204, text=""),
     )
 
-    url = "http://192.168.1.1:55443"
+    url = "http://192.168.1.1:50443"
     token = "1234567890abcdef1234567890abcdef"
 
     delete_token(url=url, token=token)
