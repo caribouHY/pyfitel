@@ -14,8 +14,8 @@ def exec_command(
     Args:
         url (str): API URL
         cmd (str): 実行するコマンド
-        user (str | None, optional): BASIC認証時のユーザー名
-        password (str | None, optional): BASIC認証時のパスワード
+        user (str | None): BASIC認証時のユーザー名
+        password (str | None): BASIC認証時のパスワード
         bearer (bool): Bearer認証を使用する場合はTrue
         token (str | None): Bearer認証時のアクセストークン
     Returns:
@@ -47,8 +47,8 @@ def exec_commands(
     Args:
         url (str): API URL
         cmd_list (list[dict]): 実行するコマンドのリスト
-        user (str | None, optional): BASIC認証時のユーザー名
-        password (str | None, optional): BASIC認証時のパスワード
+        user (str | None): BASIC認証時のユーザー名
+        password (str | None): BASIC認証時のパスワード
         bearer (bool): Bearer認証を使用する場合はTrue、BASIC認証の場合はFalse
         token (str | None): Bearer認証時のアクセストークン
     Returns:
