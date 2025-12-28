@@ -127,7 +127,7 @@ def delete_commands_result_all(
 
 def get_commands_result(
     url: str,
-    cli_id: str,
+    clis_id: str,
     user: str | None = None,
     password: str | None = None,
     bearer: bool = False,
@@ -145,7 +145,7 @@ def get_commands_result(
     Returns:
         dict:
     """
-    api = f"/api/v1/clis/{cli_id}"
+    api = f"/api/v1/clis/{clis_id}"
 
     res = get(
         base_url=url,
@@ -157,7 +157,7 @@ def get_commands_result(
 
 def delete_commands_result(
     url: str,
-    cli_id: str,
+    clis_id: str,
     user: str | None = None,
     password: str | None = None,
     bearer: bool = False,
@@ -174,7 +174,7 @@ def delete_commands_result(
         token (str | None): Bearer認証時のアクセストークン
     """
 
-    api = f"/api/v1/clis/{cli_id}"
+    api = f"/api/v1/clis/{clis_id}"
     delete(
         base_url=url,
         endpoint=api,
