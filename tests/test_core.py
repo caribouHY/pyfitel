@@ -2,7 +2,7 @@ import pytest
 from pytest_mock import MockFixture
 from requests.auth import HTTPBasicAuth
 
-from pyfitel.core import FITELnetAPIError, auth, get, post
+from pyfitel.core import FITELnetAPIError, auth, delete, get, post
 
 from .common import MockReponse
 
@@ -74,4 +74,15 @@ def test_post_failure(mocker: MockFixture):
         post(
             base_url=url, endpoint="api", auth={"auth": "token"}, data={"data": "hoge"}
         )
+    assert mock_api.call_count == 1
+
+
+def test_delete(mocker: MockFixture):
+    mock_api = mocker.patch(
+        "pyfitel.core.requests.delete",
+        return_value=MockReponse(status_code=200, text="deleted"),
+    )
+
+    url = "http://192.168.1.1:55443"
+    delete(base_url=url, endpoint="api", auth={"auth": "token"})
     assert mock_api.call_count == 1

@@ -1,9 +1,4 @@
-from urllib.parse import urljoin
-
-import requests
-from requests.auth import HTTPBasicAuth
-
-from .core import FITELnetAPIError
+from .core import auth, delete, post
 
 
 def publish_token(url: str, user: str, password: str) -> dict:
@@ -18,13 +13,13 @@ def publish_token(url: str, user: str, password: str) -> dict:
     """
 
     api = "/api/v1/token"
-    api_url = urljoin(url, api)
 
-    auth = HTTPBasicAuth(user, password)
-    res = requests.post(url=api_url, auth=auth)
-
-    if res.status_code // 100 != 2:
-        raise FITELnetAPIError(res.json().get("error"))
+    res = post(
+        base_url=url,
+        endpoint=api,
+        auth=auth(bearer=False, user=user, password=password, token=None),
+        data=None,
+    )
 
     return res.json()
 
@@ -37,12 +32,10 @@ def delete_token(url: str, token: str) -> None:
         token (str): アクセストークン
     """
 
-    api = "/api/v1/token"
-    api_url = urljoin(url, api)
-    api_url = f"{api_url}/{token}"
+    api = f"/api/v1/token/{token}"
 
-    headers = {"Authorization": f"Bearer {token}"}
-    res = requests.delete(url=api_url, headers=headers)
-
-    if res.status_code // 100 != 2:
-        raise FITELnetAPIError(res.json().get("error"))
+    delete(
+        base_url=url,
+        endpoint=api,
+        auth=auth(bearer=True, user=None, password=None, token=token),
+    )

@@ -69,7 +69,9 @@ def get(base_url: str, endpoint: str, auth: dict) -> requests.Response:
 
 
 @request_api
-def post(base_url: str, endpoint: str, auth: dict, data: dict) -> requests.Response:
+def post(
+    base_url: str, endpoint: str, auth: dict, data: dict | None
+) -> requests.Response:
     """POSTリクエストを送信する。
 
     Args:
@@ -82,3 +84,18 @@ def post(base_url: str, endpoint: str, auth: dict, data: dict) -> requests.Respo
     """
 
     return requests.post(url=urljoin(base_url, endpoint), json=data, **auth)
+
+
+@request_api
+def delete(base_url: str, endpoint: str, auth: dict) -> requests.Response:
+    """DELETEリクエストを送信する。
+
+    Args:
+        base_url (str): ベースURL
+        endpoint (str): APIエンドポイントURL
+        auth (dict): 認証情報
+    Returns:
+        requests.Response: レスポンスオブジェクト
+    """
+
+    return requests.delete(url=urljoin(base_url, endpoint), **auth)

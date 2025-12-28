@@ -1,9 +1,4 @@
-from urllib.parse import urljoin
-
-import requests
-from requests.auth import HTTPBasicAuth
-
-from .core import FITELnetAPIError, auth, get, post
+from .core import auth, get, post
 
 
 def exec_command(
@@ -28,23 +23,14 @@ def exec_command(
     """
 
     api = "/api/v1/cli"
-    api_url = urljoin(url, api)
     data = {"cmd": cmd}
 
-    if bearer:
-        if token is None:
-            raise ValueError("token must be set when using BEARER auth")
-        res = requests.post(
-            url=api_url, json=data, headers={"Authorization": f"Bearer {token}"}
-        )
-    else:
-        if user is None or password is None:
-            raise ValueError("user and password must be set when using BASIC auth")
-        auth = HTTPBasicAuth(user, password)
-        res = requests.post(url=api_url, json=data, auth=auth)
-
-    if res.status_code // 100 != 2:
-        raise FITELnetAPIError(res.json().get("error"))
+    res = post(
+        base_url=url,
+        endpoint=api,
+        auth=auth(bearer=bearer, user=user, password=password, token=token),
+        data=data,
+    )
     return res.text
 
 
