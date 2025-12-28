@@ -7,7 +7,12 @@ from requests.auth import HTTPBasicAuth
 class FITELnetAPIError(Exception):
     """FITELnet API errors."""
 
-    pass
+    def __init__(self, message, http_code):
+        self._message = message
+        self._http_code = http_code
+
+    def __str__(self):
+        return f"HTTP {self._http_code} : {self._message}"
 
 
 def request_api(func):
@@ -22,16 +27,18 @@ def request_api(func):
     def wrapper(*args, **kwargs) -> requests.Response:
         res = func(*args, **kwargs)
         if res.status_code // 100 != 2:
-            raise FITELnetAPIError(res.json().get("error"))
+            try:
+                msg = res.json().get("error")
+            except requests.JSONDecodeError:
+                msg = res.text
+            raise FITELnetAPIError(msg, res.status_code)
 
         return res
 
     return wrapper
 
 
-def auth(
-    bearer: bool, user: str | None, password: str | None, token: str | None
-) -> dict:
+def auth(bearer: bool, user: str | None, password: str | None, token: str | None) -> dict:
     """認証データを作成する。
     Args:
         bearer (bool): Bearer認証を使用する場合はTrue、BASIC認証の場合はFalse
@@ -69,9 +76,7 @@ def get(base_url: str, endpoint: str, auth: dict) -> requests.Response:
 
 
 @request_api
-def post(
-    base_url: str, endpoint: str, auth: dict, data: dict | None
-) -> requests.Response:
+def post(base_url: str, endpoint: str, auth: dict, data: dict | None) -> requests.Response:
     """POSTリクエストを送信する。
 
     Args:
@@ -99,3 +104,43 @@ def delete(base_url: str, endpoint: str, auth: dict) -> requests.Response:
     """
 
     return requests.delete(url=urljoin(base_url, endpoint), **auth)
+
+
+@request_api
+def put(base_url: str, endpoint: str, auth: dict, data: bytes) -> requests.Response:
+    """PUTリクエストを送信する。
+
+    Args:
+        base_url (str): ベースURL
+        endpoint (str): APIエンドポイントURL
+        auth (dict): 認証情報
+        data (bytes): 送信するバイトデータ
+    Returns:
+        requests.Response: レスポンスオブジェクト
+    """
+    headers = {"Content-Type": "multipart/form-data"}
+    if "headers" in auth:
+        headers.update(auth["headers"])
+        auth.pop("headers")
+
+    return requests.put(url=urljoin(base_url, endpoint), headers=headers, data=data, **auth)
+
+
+@request_api
+def patch(base_url: str, endpoint: str, auth: dict, data: bytes) -> requests.Response:
+    """PATCHリクエストを送信する。
+
+    Args:
+        base_url (str): ベースURL
+        endpoint (str): APIエンドポイントURL
+        auth (dict): 認証情報
+        data (bytes): 送信するバイトデータ
+    Returns:
+        requests.Response: レスポンスオブジェクト
+    """
+    headers = {"Content-Type": "multipart/form-data"}
+    if "headers" in auth:
+        headers.update(auth["headers"])
+        auth.pop("headers")
+
+    return requests.patch(url=urljoin(base_url, endpoint), headers=headers, data=data, **auth)
