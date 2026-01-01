@@ -8,6 +8,7 @@ from .cli import (
 )
 from .config import replace_config, update_config
 from .core import FITELnetAPIError
+from .fitel import CLI, FITELnetAPI
 from .token import delete_token, publish_token
 
 __all__ = [
@@ -20,6 +21,8 @@ __all__ = [
     "replace_config",
     "update_config",
     "FITELnetAPIError",
+    "CLI",
+    "FITELnetAPI",
     "delete_token",
     "publish_token",
 ]
