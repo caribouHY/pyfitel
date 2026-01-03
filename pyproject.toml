@@ -1,0 +1,46 @@
+[project]
+name = "pyfitel"
+version = "0.1.0"
+description = "Python wrapper for FITELnet API"
+readme = "README.md"
+authors = [
+    { name = "caribouHY", email = "59246671+caribouHY@users.noreply.github.com" }
+]
+license = { file = "LICENSE" }
+requires-python = ">=3.12"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: System :: Networking",
+]
+dependencies = [
+    "requests>=2.32.5",
+]
+
+[project.urls]
+Homepage = "https://github.com/caribouHY/pyfitel"
+Repository = "https://github.com/caribouHY/pyfitel"
+
+[build-system]
+requires = ["uv_build>=0.9.18,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.407",
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+    "pytest-mock>=3.15.1",
+    "ruff>=0.14.10",
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.pyright]
+typeCheckingMode = "standard"
+pythonVersion = "3.12"
