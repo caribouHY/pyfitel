@@ -52,12 +52,12 @@ def auth(bearer: bool, user: str | None, password: str | None, token: str | None
         if token is None:
             raise ValueError("token must be set when using BEARER auth")
         headers = {"Authorization": f"Bearer {token}"}
-        return {"headers": headers}
+        return {"headers": headers, "verify": False}
     else:
         if user is None or password is None:
             raise ValueError("user and password must be set when using BASIC auth")
         auth = HTTPBasicAuth(user, password)
-        return {"auth": auth}
+        return {"auth": auth, "verify": False}
 
 
 @request_api
