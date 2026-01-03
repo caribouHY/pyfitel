@@ -6,10 +6,24 @@ readme = "README.md"
 authors = [
     { name = "caribouHY", email = "59246671+caribouHY@users.noreply.github.com" }
 ]
+license = { file = "LICENSE" }
 requires-python = ">=3.12"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: System :: Networking",
+]
 dependencies = [
     "requests>=2.32.5",
 ]
+
+[project.urls]
+Homepage = "https://github.com/caribouHY/pyfitel"
+Repository = "https://github.com/caribouHY/pyfitel"
 
 [build-system]
 requires = ["uv_build>=0.9.18,<0.10.0"]

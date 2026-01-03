@@ -3,7 +3,7 @@ pyfitel is a Python wrapper for [FITELnet API](https://www.furukawaelectric.com/
 
 ## Usage
 
-Install
+Installation
 
 ```
 pip install pyfitel
